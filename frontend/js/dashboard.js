@@ -1,246 +1,647 @@
 const API_URL = "http://localhost:5000/api/products";
 
-let products = [];
-let editingProductId = null;
+let allProducts = [];
 
-// =========================
+
+// ================================
+// USER
+// ================================
+
+const userEmail =
+    localStorage.getItem("userEmail");
+
+document.getElementById("userEmail").textContent =
+    userEmail || "Administrator";
+
+
+// ================================
+// DATE & TIME
+// ================================
+
+function updateDateTime() {
+
+    const now = new Date();
+
+    document.getElementById("currentDate").textContent =
+        now.toLocaleDateString("en-IN", {
+            weekday: "long",
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+
+    document.getElementById("currentTime").textContent =
+        now.toLocaleTimeString("en-IN", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        });
+}
+
+updateDateTime();
+
+setInterval(updateDateTime, 1000);
+
+
+// ================================
+// LOGOUT
+// ================================
+
+function logout() {
+
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userEmail");
+
+    window.location.href = "login.html";
+}
+
+
+// ================================
 // LOAD PRODUCTS
-// =========================
+// ================================
+
 async function loadProducts() {
+
+    const tableBody =
+        document.getElementById("productTableBody");
+
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="8" class="loading">
+                Loading products...
+            </td>
+        </tr>
+    `;
+
     try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
 
-        products = data.products || [];
+        const response =
+            await fetch(API_URL);
 
-        displayProducts(products);
-        updateStats(products);
+        if (!response.ok) {
+            throw new Error(
+                "API returned status " + response.status
+            );
+        }
+
+        const data =
+            await response.json();
+
+        console.log("API DATA:", data);
+
+
+        // IMPORTANT:
+        // Your API returns { success:true, products:[...] }
+
+        if (!data.success || !Array.isArray(data.products)) {
+
+            throw new Error(
+                "Invalid products response"
+            );
+        }
+
+
+        allProducts = data.products;
+
+        displayProducts(allProducts);
+
+        updateStatistics(allProducts);
+
+
     } catch (error) {
-        console.error(error);
+
+        console.error(
+            "PRODUCT LOADING ERROR:",
+            error
+        );
+
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8" class="loading">
+                    ❌ Unable to load products.
+                    <br>
+                    <small>
+                        Make sure backend is running on
+                        localhost:5000
+                    </small>
+                </td>
+            </tr>
+        `;
     }
 }
 
-// =========================
+
+// ================================
 // DISPLAY PRODUCTS
-// =========================
-function displayProducts(productList) {
-    const tableBody = document.getElementById("productTableBody");
+// ================================
+
+function displayProducts(products) {
+
+    const tableBody =
+        document.getElementById("productTableBody");
+
     tableBody.innerHTML = "";
 
-    if (productList.length === 0) {
+
+    if (products.length === 0) {
+
         tableBody.innerHTML = `
             <tr>
-                <td colspan="8">No products found.</td>
+                <td colspan="8" class="loading">
+                    No products found.
+                </td>
             </tr>
         `;
+
         return;
     }
 
-    productList.forEach(product => {
+
+    products.forEach(product => {
+
+        const quantity =
+            Number(product.quantity) || 0;
+
+        const price =
+            Number(product.price) || 0;
+
+
+        let statusClass = "in-stock";
+        let statusText = "In Stock";
+
+
+        if (quantity === 0) {
+
+            statusClass = "out-stock";
+            statusText = "Out of Stock";
+
+        } else if (quantity <= 5) {
+
+            statusClass = "low-stock";
+            statusText = "Low Stock";
+        }
+
+
         const row = document.createElement("tr");
 
+
         row.innerHTML = `
-            <td>${product.id}</td>
-            <td><strong>${product.name}</strong></td>
-            <td>${product.category}</td>
-            <td>${product.sku}</td>
-            <td>₹${Number(product.price).toLocaleString("en-IN")}</td>
+
             <td>
-                <span class="stock-badge ${
-                    product.quantity <= 5 ? "low-stock" : "normal-stock"
-                }">
-                    ${product.quantity}
-                </span>
+
+                <div class="product-name">
+                    ${escapeHTML(product.name)}
+                </div>
+
+                <div class="product-description">
+                    ${escapeHTML(product.description || "")}
+                </div>
+
             </td>
-            <td>${product.supplier || "-"}</td>
+
+
             <td>
-                <button class="edit-btn" onclick="editProduct(${product.id})">
-                    ✏️
+                ${escapeHTML(product.sku || "-")}
+            </td>
+
+
+            <td>
+                ${escapeHTML(product.category || "-")}
+            </td>
+
+
+            <td>
+                ${escapeHTML(product.supplier || "-")}
+            </td>
+
+
+            <td>
+                ₹${price.toLocaleString("en-IN")}
+            </td>
+
+
+            <td>
+                <strong>${quantity}</strong>
+            </td>
+
+
+            <td>
+
+                <span class="status ${statusClass}">
+                    ${statusText}
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <button
+                    class="edit-btn"
+                    onclick="editProduct(${product.id})"
+                >
+                    ✏ Edit
                 </button>
 
-                <button class="delete-btn" onclick="deleteProduct(${product.id})">
-                    🗑️
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteProduct(${product.id})"
+                >
+                    🗑 Delete
                 </button>
+
             </td>
+
         `;
 
+
         tableBody.appendChild(row);
+
     });
 }
 
-// =========================
-// UPDATE STATS
-// =========================
-function updateStats(productList) {
-    document.getElementById("totalProducts").textContent = productList.length;
 
-    const totalStock = productList.reduce(
-        (sum, p) => sum + Number(p.quantity),
-        0
-    );
+// ================================
+// STATISTICS
+// ================================
 
-    document.getElementById("totalStock").textContent = totalStock;
+function updateStatistics(products) {
 
-    const inventoryValue = productList.reduce(
-        (sum, p) => sum + Number(p.price) * Number(p.quantity),
-        0
-    );
+    let totalStock = 0;
 
-    document.getElementById("inventoryValue").textContent =
-        "₹" + inventoryValue.toLocaleString("en-IN");
+    let inventoryValue = 0;
 
-    const lowStock = productList.filter(
-        p => Number(p.quantity) <= 5
-    ).length;
+    let lowStock = 0;
 
-    document.getElementById("lowStock").textContent = lowStock;
-}
 
-// =========================
-// SEARCH PRODUCTS
-// =========================
-document.getElementById("searchProduct").addEventListener("input", function () {
-    const text = this.value.toLowerCase();
+    products.forEach(product => {
 
-    const filtered = products.filter(p =>
-        p.name.toLowerCase().includes(text) ||
-        p.category.toLowerCase().includes(text) ||
-        p.sku.toLowerCase().includes(text)
-    );
+        const quantity =
+            Number(product.quantity) || 0;
 
-    displayProducts(filtered);
-});
+        const price =
+            Number(product.price) || 0;
 
-// =========================
-// OPEN MODAL
-// =========================
-function openProductModal() {
-    editingProductId = null;
 
-    document.getElementById("productForm").reset();
-    document.getElementById("productModal").style.display = "flex";
-}
+        totalStock += quantity;
 
-// =========================
-// CLOSE MODAL
-// =========================
-function closeProductModal() {
-    document.getElementById("productModal").style.display = "none";
-}
+        inventoryValue +=
+            quantity * price;
 
-// =========================
-// ADD / UPDATE PRODUCT
-// =========================
-document.getElementById("productForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
 
-    const product = {
-        name: document.getElementById("productName").value,
-        category: document.getElementById("productCategory").value,
-        sku: document.getElementById("productSku").value,
-        price: Number(document.getElementById("productPrice").value),
-        quantity: Number(document.getElementById("productQuantity").value),
-        supplier: document.getElementById("productSupplier").value,
-        description: document.getElementById("productDescription").value
-    };
-
-    try {
-        let response;
-
-        // UPDATE
-        if (editingProductId) {
-            response = await fetch(`${API_URL}/${editingProductId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(product)
-            });
-        }
-        // ADD
-        else {
-            response = await fetch(API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(product)
-            });
+        if (quantity <= 5) {
+            lowStock++;
         }
 
-        const data = await response.json();
+    });
 
-        if (!data.success) {
-            alert(data.message);
-            return;
-        }
 
-        alert(editingProductId
-            ? "Product updated successfully!"
-            : "Product added successfully!"
-        );
+    document.getElementById(
+        "totalProducts"
+    ).textContent =
+        products.length;
 
-        closeProductModal();
-        loadProducts();
-    } catch (error) {
-        console.error(error);
-        alert("Unable to connect to server.");
+
+    document.getElementById(
+        "totalStock"
+    ).textContent =
+        totalStock.toLocaleString("en-IN");
+
+
+    document.getElementById(
+        "inventoryValue"
+    ).textContent =
+        "₹" +
+        inventoryValue.toLocaleString("en-IN");
+
+
+    document.getElementById(
+        "lowStock"
+    ).textContent =
+        lowStock;
+}
+
+
+// ================================
+// SEARCH
+// ================================
+
+function searchProducts() {
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value
+        .toLowerCase()
+        .trim();
+
+
+    if (!search) {
+
+        displayProducts(allProducts);
+
+        return;
     }
-});
 
-// =========================
-// EDIT PRODUCT
-// =========================
-function editProduct(id) {
-    const product = products.find(p => p.id === id);
 
-    if (!product) return;
+    const filtered =
+        allProducts.filter(product => {
 
-    editingProductId = id;
+            return (
 
-    document.getElementById("productName").value = product.name;
-    document.getElementById("productCategory").value = product.category;
-    document.getElementById("productSku").value = product.sku;
-    document.getElementById("productPrice").value = product.price;
-    document.getElementById("productQuantity").value = product.quantity;
-    document.getElementById("productSupplier").value = product.supplier || "";
-    document.getElementById("productDescription").value = product.description || "";
+                String(product.name)
+                    .toLowerCase()
+                    .includes(search)
 
-    document.getElementById("productModal").style.display = "flex";
-}
+                ||
 
-// =========================
-// DELETE PRODUCT
-// =========================
-async function deleteProduct(id) {
-    const confirmDelete = confirm(
-        "Are you sure you want to delete this product?"
-    );
+                String(product.sku)
+                    .toLowerCase()
+                    .includes(search)
 
-    if (!confirmDelete) return;
+                ||
 
-    try {
-        const response = await fetch(`${API_URL}/${id}`, {
-            method: "DELETE"
+                String(product.category)
+                    .toLowerCase()
+                    .includes(search)
+
+                ||
+
+                String(product.supplier)
+                    .toLowerCase()
+                    .includes(search)
+
+            );
+
         });
 
-        const data = await response.json();
 
-        if (!data.success) {
-            alert(data.message);
-            return;
+    displayProducts(filtered);
+}
+
+
+// ================================
+// ADD PRODUCT MODAL
+// ================================
+
+function openModal() {
+
+    document.getElementById(
+        "productModal"
+    ).style.display = "flex";
+}
+
+
+function closeModal() {
+
+    document.getElementById(
+        "productModal"
+    ).style.display = "none";
+}
+
+
+window.addEventListener("click", function(event) {
+
+    const modal =
+        document.getElementById(
+            "productModal"
+        );
+
+    if (event.target === modal) {
+
+        closeModal();
+    }
+
+});
+
+
+// ================================
+// ADD PRODUCT
+// ================================
+
+document.getElementById(
+    "productForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const product = {
+
+            name:
+                document.getElementById(
+                    "productName"
+                ).value.trim(),
+
+            category:
+                document.getElementById(
+                    "productCategory"
+                ).value.trim(),
+
+            sku:
+                document.getElementById(
+                    "productSku"
+                ).value.trim(),
+
+            supplier:
+                document.getElementById(
+                    "productSupplier"
+                ).value.trim(),
+
+            price:
+                Number(
+                    document.getElementById(
+                        "productPrice"
+                    ).value
+                ),
+
+            quantity:
+                Number(
+                    document.getElementById(
+                        "productQuantity"
+                    ).value
+                ),
+
+            description:
+                document.getElementById(
+                    "productDescription"
+                ).value.trim()
+
+        };
+
+
+        try {
+
+            const response =
+                await fetch(
+                    API_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(product)
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to add product"
+                );
+            }
+
+
+            alert(
+                "Product added successfully!"
+            );
+
+
+            document.getElementById(
+                "productForm"
+            ).reset();
+
+
+            closeModal();
+
+            loadProducts();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Failed to add product: " +
+                error.message
+            );
         }
 
-        alert("Product deleted successfully!");
+    }
+);
+
+
+// ================================
+// DELETE PRODUCT
+// ================================
+
+async function deleteProduct(id) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this product?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                "Delete failed"
+            );
+        }
+
+
+        alert(
+            "Product deleted successfully!"
+        );
+
 
         loadProducts();
+
+
     } catch (error) {
+
         console.error(error);
-        alert("Unable to connect to server.");
+
+        alert(
+            "Failed to delete product: " +
+            error.message
+        );
     }
 }
 
-// =========================
-// START APP
-// =========================
+
+// ================================
+// EDIT PRODUCT
+// ================================
+
+function editProduct(id) {
+
+    const product =
+        allProducts.find(
+            item => item.id === id
+        );
+
+
+    if (!product) {
+        return;
+    }
+
+
+    alert(
+        "Edit feature selected for:\n\n" +
+        product.name +
+        "\nSKU: " +
+        product.sku
+    );
+
+    // We will add the complete edit modal
+    // after confirming your UPDATE API route.
+}
+
+
+// ================================
+// HTML SAFETY
+// ================================
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value == null ? "" : value;
+
+    return div.innerHTML;
+}
+
+
+// ================================
+// INITIAL LOAD
+// ================================
+
 loadProducts();
