@@ -1,0 +1,682 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>InventoryPro Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+                Inventory<span>Pro</span>
+            </div>
+
+            <nav>
+
+                <a href="#" class="active">
+                    📊 Dashboard
+                </a>
+
+                <a href="#">
+                    📦 Products
+                </a>
+
+                <a href="#">
+                    🛒 Orders
+                </a>
+
+                <a href="#">
+                    👥 Customers
+                </a>
+
+                <a href="#">
+                    📈 Reports
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <a href="login.html">
+                    🚪 Logout
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =========================
+             MAIN CONTENT
+        ========================== -->
+
+        <main class="main-content">
+
+            <!-- HEADER -->
+
+            <header class="dashboard-header">
+
+                <div>
+
+                    <h1>
+                        Dashboard
+                    </h1>
+
+                    <p>
+                        Welcome back! Here's your inventory overview.
+                    </p>
+
+                </div>
+
+
+                <!-- STEP 34: ADD PRODUCT BUTTON -->
+
+                <button
+                    class="add-product-btn"
+                    onclick="openProductModal()">
+
+                    + Add Product
+
+                </button>
+
+            </header>
+
+
+            <!-- =========================
+                 STAT CARDS
+            ========================== -->
+
+            <section class="stats-grid">
+
+                <!-- TOTAL PRODUCTS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📦
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Total Products
+                        </p>
+
+                        <h2 id="totalProducts">
+                            0
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOTAL STOCK -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📊
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Total Stock
+                        </p>
+
+                        <h2 id="totalStock">
+                            0
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INVENTORY VALUE -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        💰
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Inventory Value
+                        </p>
+
+                        <h2 id="inventoryValue">
+                            ₹0
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOW STOCK -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ⚠️
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Low Stock
+                        </p>
+
+                        <h2 id="lowStock">
+                            0
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 PRODUCTS SECTION
+            ========================== -->
+
+            <section class="products-section">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Products
+                        </h2>
+
+                        <p>
+                            Manage your inventory products
+                        </p>
+
+                    </div>
+
+
+                    <!-- SEARCH -->
+
+                    <input
+                        type="text"
+                        id="searchProduct"
+                        placeholder="🔍 Search products..."
+                    >
+
+                </div>
+
+
+                <!-- PRODUCT TABLE -->
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    ID
+                                </th>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    SKU
+                                </th>
+
+                                <th>
+                                    Price
+                                </th>
+
+                                <th>
+                                    Stock
+                                </th>
+
+                                <th>
+                                    Supplier
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="productTableBody">
+
+                            <tr>
+
+                                <td colspan="8">
+                                    Loading products...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================
+         ADD PRODUCT MODAL
+         STEP 35 WILL USE THIS
+    ========================== -->
+
+    <div
+        id="productModal"
+        class="modal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Add Product
+                    </h2>
+
+                    <p>
+                        Add a new product to inventory
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="close-modal"
+                    onclick="closeProductModal()">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <form id="productForm">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label>
+                            Product Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productName"
+                            placeholder="Enter product name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Category
+                        </label>
+
+                        <select
+                            id="productCategory"
+                            required>
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            <option value="Electronics">
+                                Electronics
+                            </option>
+
+                            <option value="Furniture">
+                                Furniture
+                            </option>
+
+                            <option value="Stationery">
+                                Stationery
+                            </option>
+
+                            <option value="Accessories">
+                                Accessories
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label>
+                            SKU
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productSku"
+                            placeholder="Example: LAP-002"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Price
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productPrice"
+                            placeholder="Enter price"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label>
+                            Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productQuantity"
+                            placeholder="Enter quantity"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Supplier
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productSupplier"
+                            placeholder="Supplier name"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        id="productDescription"
+                        placeholder="Product description">
+                    </textarea>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-btn">
+
+                    Add Product
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- DASHBOARD JAVASCRIPT -->
+<!-- ADD PRODUCT MODAL -->
+
+<div
+    id="productModal"
+    class="modal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>Add Product</h2>
+
+                <p>
+                    Add a new product to inventory
+                </p>
+
+            </div>
+
+            <button
+                class="close-modal"
+                onclick="closeProductModal()">
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="productForm">
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        Product Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productName"
+                        placeholder="Enter product name"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <select id="productCategory" required>
+
+                        <option value="">
+                            Select Category
+                        </option>
+
+                        <option value="Electronics">
+                            Electronics
+                        </option>
+
+                        <option value="Furniture">
+                            Furniture
+                        </option>
+
+                        <option value="Stationery">
+                            Stationery
+                        </option>
+
+                        <option value="Accessories">
+                            Accessories
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        SKU
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productSku"
+                        placeholder="Example: LAP-002"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Price
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productPrice"
+                        placeholder="Enter price"
+                        min="0"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productQuantity"
+                        placeholder="Enter quantity"
+                        min="0"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Supplier
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productSupplier"
+                        placeholder="Supplier name">
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    id="productDescription"
+                    placeholder="Product description">
+                </textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="auth-btn">
+
+                Add Product
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+    <script src="js/dashboard.js"></script>
+
+</body>
+
+</html>
+```
