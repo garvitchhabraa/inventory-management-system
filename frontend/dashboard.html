@@ -1,235 +1,367 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>InventoryPro Dashboard</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/style.css">
+    <title>Inventory Management System</title>
+
+    <link rel="stylesheet"
+        href="css/dashboard.css">
 </head>
 
 <body>
 
-    <div class="dashboard">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-        <!-- =========================
-             SIDEBAR
-        ========================== -->
+        <div class="logo">
+            <div class="logo-icon">📦</div>
 
-        <aside class="sidebar">
+            <div>
+                <h2>StockFlow</h2>
+                <span>Inventory System</span>
+            </div>
+        </div>
 
-            <div class="sidebar-logo">
-                Inventory<span>Pro</span>
+
+        <nav class="sidebar-nav">
+
+            <a href="#" class="nav-item active">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>📦</span>
+                Products
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>📋</span>
+                Orders
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>👥</span>
+                Suppliers
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>📊</span>
+                Reports
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="nav-item">
+                <span>⚙️</span>
+                Settings
+            </a>
+
+            <div class="profile-card">
+
+                <div class="profile-avatar">
+                    A
+                </div>
+
+                <div class="profile-info">
+                    <strong>Admin</strong>
+                    <span>Administrator</span>
+                </div>
+
+                <span class="profile-more">⋮</span>
+
             </div>
 
-            <nav>
+        </div>
 
-                <a href="#" class="active">
-                    📊 Dashboard
-                </a>
+    </aside>
 
-                <a href="#">
-                    📦 Products
-                </a>
 
-                <a href="#">
-                    🛒 Orders
-                </a>
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
 
-                <a href="#">
-                    👥 Customers
-                </a>
+        <!-- TOPBAR -->
+        <header class="topbar">
 
-                <a href="#">
-                    📈 Reports
-                </a>
+            <div class="mobile-menu">
+                ☰
+            </div>
 
-            </nav>
+            <div class="topbar-title">
 
-            <div class="sidebar-bottom">
+                <span class="page-label">
+                    Overview
+                </span>
 
-                <a href="login.html">
-                    🚪 Logout
-                </a>
+                <h1>Inventory Dashboard</h1>
 
             </div>
 
-        </aside>
+
+            <div class="topbar-actions">
+
+                <button class="icon-button">
+                    🔔
+                    <span class="notification-dot"></span>
+                </button>
+
+                <div class="topbar-date">
+                    <span>Today</span>
+                    <strong id="currentDate"></strong>
+                </div>
+
+            </div>
+
+        </header>
 
 
-        <!-- =========================
-             MAIN CONTENT
-        ========================== -->
+        <!-- DASHBOARD CONTENT -->
+        <section class="dashboard-content">
 
-        <main class="main-content">
 
-            <!-- HEADER -->
-
-            <header class="dashboard-header">
+            <!-- WELCOME -->
+            <div class="welcome-section">
 
                 <div>
 
-                    <h1>
-                        Dashboard
-                    </h1>
+                    <p class="welcome-small">
+                        Good to see you again 👋
+                    </p>
 
-                    <p>
-                        Welcome back! Here's your inventory overview.
+                    <h2>
+                        Here's your inventory overview
+                    </h2>
+
+                    <p class="welcome-description">
+                        Monitor your products, stock levels
+                        and inventory value from one place.
                     </p>
 
                 </div>
 
 
-                <!-- STEP 34: ADD PRODUCT BUTTON -->
-
                 <button
-                    class="add-product-btn"
+                    class="primary-button"
                     onclick="openProductModal()">
 
-                    + Add Product
+                    <span>＋</span>
+                    Add Product
 
                 </button>
 
-            </header>
+            </div>
 
 
-            <!-- =========================
-                 STAT CARDS
-            ========================== -->
+            <!-- STAT CARDS -->
+            <div class="stats-grid">
 
-            <section class="stats-grid">
 
                 <!-- TOTAL PRODUCTS -->
-
                 <div class="stat-card">
 
-                    <div class="stat-icon">
-                        📦
+                    <div class="stat-top">
+
+                        <div class="stat-icon purple">
+                            📦
+                        </div>
+
+                        <span class="stat-label">
+                            Total Products
+                        </span>
+
                     </div>
 
-                    <div>
+                    <div class="stat-value"
+                        id="totalProducts">
+                        0
+                    </div>
 
-                        <p>
-                            Total Products
-                        </p>
+                    <div class="stat-footer">
+                        <span class="trend positive">
+                            ↗ Inventory
+                        </span>
 
-                        <h2 id="totalProducts">
-                            0
-                        </h2>
-
+                        <span>
+                            Products
+                        </span>
                     </div>
 
                 </div>
 
 
                 <!-- TOTAL STOCK -->
-
                 <div class="stat-card">
 
-                    <div class="stat-icon">
-                        📊
+                    <div class="stat-top">
+
+                        <div class="stat-icon blue">
+                            📊
+                        </div>
+
+                        <span class="stat-label">
+                            Total Stock
+                        </span>
+
                     </div>
 
-                    <div>
+                    <div class="stat-value"
+                        id="totalStock">
+                        0
+                    </div>
 
-                        <p>
-                            Total Stock
-                        </p>
+                    <div class="stat-footer">
+                        <span class="trend positive">
+                            ● Available
+                        </span>
 
-                        <h2 id="totalStock">
-                            0
-                        </h2>
-
+                        <span>
+                            Units
+                        </span>
                     </div>
 
                 </div>
 
 
                 <!-- INVENTORY VALUE -->
-
                 <div class="stat-card">
 
-                    <div class="stat-icon">
-                        💰
+                    <div class="stat-top">
+
+                        <div class="stat-icon green">
+                            ₹
+                        </div>
+
+                        <span class="stat-label">
+                            Inventory Value
+                        </span>
+
                     </div>
 
-                    <div>
+                    <div class="stat-value"
+                        id="inventoryValue">
+                        ₹0
+                    </div>
 
-                        <p>
-                            Inventory Value
-                        </p>
+                    <div class="stat-footer">
+                        <span class="trend positive">
+                            ↗ Value
+                        </span>
 
-                        <h2 id="inventoryValue">
-                            ₹0
-                        </h2>
-
+                        <span>
+                            Total
+                        </span>
                     </div>
 
                 </div>
 
 
                 <!-- LOW STOCK -->
-
                 <div class="stat-card">
 
-                    <div class="stat-icon">
-                        ⚠️
+                    <div class="stat-top">
+
+                        <div class="stat-icon orange">
+                            ⚠
+                        </div>
+
+                        <span class="stat-label">
+                            Low Stock
+                        </span>
+
                     </div>
 
-                    <div>
+                    <div class="stat-value"
+                        id="lowStock">
+                        0
+                    </div>
 
-                        <p>
-                            Low Stock
-                        </p>
+                    <div class="stat-footer">
+                        <span class="trend warning">
+                            ⚠ Attention
+                        </span>
 
-                        <h2 id="lowStock">
-                            0
-                        </h2>
-
+                        <span>
+                            Products
+                        </span>
                     </div>
 
                 </div>
 
-            </section>
+            </div>
 
 
-            <!-- =========================
-                 PRODUCTS SECTION
-            ========================== -->
-
+            <!-- PRODUCT SECTION -->
             <section class="products-section">
 
+
+                <!-- SECTION HEADER -->
                 <div class="section-header">
 
                     <div>
+
+                        <p class="section-label">
+                            Inventory
+                        </p>
 
                         <h2>
                             Products
                         </h2>
 
-                        <p>
-                            Manage your inventory products
-                        </p>
-
                     </div>
 
+                    <div class="section-actions">
 
-                    <!-- SEARCH -->
+                        <button class="secondary-button">
+                            ⬇ Export
+                        </button>
 
-                    <input
-                        type="text"
-                        id="searchProduct"
-                        placeholder="🔍 Search products..."
-                    >
+                        <button
+                            class="primary-button small"
+                            onclick="openProductModal()">
+
+                            ＋ Add Product
+
+                        </button>
+
+                    </div>
 
                 </div>
 
 
-                <!-- PRODUCT TABLE -->
+                <!-- SEARCH BAR -->
+                <div class="table-toolbar">
 
+                    <div class="search-container">
+
+                        <span class="search-icon">
+                            🔍
+                        </span>
+
+                        <input
+                            type="text"
+                            id="searchProduct"
+                            placeholder="Search products, category or SKU..."
+                        >
+
+                    </div>
+
+
+                    <button class="filter-button">
+                        ☰ Filter
+                    </button>
+
+                </div>
+
+
+                <!-- TABLE -->
                 <div class="table-container">
 
                     <table>
@@ -238,37 +370,21 @@
 
                             <tr>
 
-                                <th>
-                                    ID
-                                </th>
+                                <th>ID</th>
 
-                                <th>
-                                    Product
-                                </th>
+                                <th>PRODUCT</th>
 
-                                <th>
-                                    Category
-                                </th>
+                                <th>CATEGORY</th>
 
-                                <th>
-                                    SKU
-                                </th>
+                                <th>SKU</th>
 
-                                <th>
-                                    Price
-                                </th>
+                                <th>PRICE</th>
 
-                                <th>
-                                    Stock
-                                </th>
+                                <th>STOCK</th>
 
-                                <th>
-                                    Supplier
-                                </th>
+                                <th>SUPPLIER</th>
 
-                                <th>
-                                    Action
-                                </th>
+                                <th>ACTION</th>
 
                             </tr>
 
@@ -279,8 +395,11 @@
 
                             <tr>
 
-                                <td colspan="8">
+                                <td colspan="8"
+                                    class="loading-cell">
+
                                     Loading products...
+
                                 </td>
 
                             </tr>
@@ -293,39 +412,37 @@
 
             </section>
 
-        </main>
+        </section>
 
-    </div>
+    </main>
 
 
-    <!-- =========================
-         ADD PRODUCT MODAL
-         STEP 35 WILL USE THIS
-    ========================== -->
-
+    <!-- ADD / EDIT PRODUCT MODAL -->
     <div
-        id="productModal"
-        class="modal">
+        class="modal-overlay"
+        id="productModal">
 
-        <div class="modal-content">
+        <div class="modal">
 
+
+            <!-- MODAL HEADER -->
             <div class="modal-header">
 
                 <div>
 
-                    <h2>
-                        Add Product
-                    </h2>
+                    <span class="modal-label">
+                        INVENTORY
+                    </span>
 
-                    <p>
-                        Add a new product to inventory
-                    </p>
+                    <h2 id="modalTitle">
+                        Add New Product
+                    </h2>
 
                 </div>
 
 
                 <button
-                    class="close-modal"
+                    class="modal-close"
                     onclick="closeProductModal()">
 
                     ×
@@ -335,11 +452,15 @@
             </div>
 
 
+            <!-- FORM -->
             <form id="productForm">
 
-                <div class="form-row">
 
-                    <div class="form-group">
+                <div class="form-grid">
+
+
+                    <!-- NAME -->
+                    <div class="form-group full">
 
                         <label>
                             Product Name
@@ -355,6 +476,7 @@
                     </div>
 
 
+                    <!-- CATEGORY -->
                     <div class="form-group">
 
                         <label>
@@ -366,11 +488,19 @@
                             required>
 
                             <option value="">
-                                Select Category
+                                Select category
                             </option>
 
                             <option value="Electronics">
                                 Electronics
+                            </option>
+
+                            <option value="Clothing">
+                                Clothing
+                            </option>
+
+                            <option value="Food">
+                                Food
                             </option>
 
                             <option value="Furniture">
@@ -381,19 +511,16 @@
                                 Stationery
                             </option>
 
-                            <option value="Accessories">
-                                Accessories
+                            <option value="Other">
+                                Other
                             </option>
 
                         </select>
 
                     </div>
 
-                </div>
 
-
-                <div class="form-row">
-
+                    <!-- SKU -->
                     <div class="form-group">
 
                         <label>
@@ -403,34 +530,32 @@
                         <input
                             type="text"
                             id="productSku"
-                            placeholder="Example: LAP-002"
+                            placeholder="e.g. SKU-001"
                             required
                         >
 
                     </div>
 
 
+                    <!-- PRICE -->
                     <div class="form-group">
 
                         <label>
-                            Price
+                            Price (₹)
                         </label>
 
                         <input
                             type="number"
                             id="productPrice"
-                            placeholder="Enter price"
+                            placeholder="0"
                             min="0"
                             required
                         >
 
                     </div>
 
-                </div>
 
-
-                <div class="form-row">
-
+                    <!-- QUANTITY -->
                     <div class="form-group">
 
                         <label>
@@ -440,7 +565,7 @@
                         <input
                             type="number"
                             id="productQuantity"
-                            placeholder="Enter quantity"
+                            placeholder="0"
                             min="0"
                             required
                         >
@@ -448,7 +573,8 @@
                     </div>
 
 
-                    <div class="form-group">
+                    <!-- SUPPLIER -->
+                    <div class="form-group full">
 
                         <label>
                             Supplier
@@ -457,35 +583,53 @@
                         <input
                             type="text"
                             id="productSupplier"
-                            placeholder="Supplier name"
+                            placeholder="Enter supplier name"
                         >
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+                    <div class="form-group full">
+
+                        <label>
+                            Description
+                        </label>
+
+                        <textarea
+                            id="productDescription"
+                            rows="3"
+                            placeholder="Enter product description">
+                        </textarea>
 
                     </div>
 
                 </div>
 
 
-                <div class="form-group">
+                <!-- MODAL FOOTER -->
+                <div class="modal-footer">
 
-                    <label>
-                        Description
-                    </label>
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        onclick="closeProductModal()">
 
-                    <textarea
-                        id="productDescription"
-                        placeholder="Product description">
-                    </textarea>
+                        Cancel
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button">
+
+                        <span>＋</span>
+                        Save Product
+
+                    </button>
 
                 </div>
-
-
-                <button
-                    type="submit"
-                    class="auth-btn">
-
-                    Add Product
-
-                </button>
 
             </form>
 
@@ -494,189 +638,54 @@
     </div>
 
 
-    <!-- DASHBOARD JAVASCRIPT -->
-<!-- ADD PRODUCT MODAL -->
-
-<div
-    id="productModal"
-    class="modal">
-
-    <div class="modal-content">
-
-        <div class="modal-header">
-
-            <div>
-
-                <h2>Add Product</h2>
-
-                <p>
-                    Add a new product to inventory
-                </p>
-
-            </div>
-
-            <button
-                class="close-modal"
-                onclick="closeProductModal()">
-                ×
-            </button>
-
-        </div>
-
-
-        <form id="productForm">
-
-            <div class="form-row">
-
-                <div class="form-group">
-
-                    <label>
-                        Product Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="productName"
-                        placeholder="Enter product name"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Category
-                    </label>
-
-                    <select id="productCategory" required>
-
-                        <option value="">
-                            Select Category
-                        </option>
-
-                        <option value="Electronics">
-                            Electronics
-                        </option>
-
-                        <option value="Furniture">
-                            Furniture
-                        </option>
-
-                        <option value="Stationery">
-                            Stationery
-                        </option>
-
-                        <option value="Accessories">
-                            Accessories
-                        </option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-row">
-
-                <div class="form-group">
-
-                    <label>
-                        SKU
-                    </label>
-
-                    <input
-                        type="text"
-                        id="productSku"
-                        placeholder="Example: LAP-002"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Price
-                    </label>
-
-                    <input
-                        type="number"
-                        id="productPrice"
-                        placeholder="Enter price"
-                        min="0"
-                        required>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-row">
-
-                <div class="form-group">
-
-                    <label>
-                        Quantity
-                    </label>
-
-                    <input
-                        type="number"
-                        id="productQuantity"
-                        placeholder="Enter quantity"
-                        min="0"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Supplier
-                    </label>
-
-                    <input
-                        type="text"
-                        id="productSupplier"
-                        placeholder="Supplier name">
-
-                </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Description
-                </label>
-
-                <textarea
-                    id="productDescription"
-                    placeholder="Product description">
-                </textarea>
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="auth-btn">
-
-                Add Product
-
-            </button>
-
-        </form>
-
-    </div>
-
-</div>
     <script src="js/dashboard.js"></script>
+
+
+    <script>
+
+        // Current date
+
+        const dateElement =
+            document.getElementById("currentDate");
+
+        const today = new Date();
+
+        dateElement.textContent =
+            today.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+
+        // Mobile sidebar
+
+        const mobileMenu =
+            document.querySelector(".mobile-menu");
+
+        const sidebar =
+            document.querySelector(".sidebar");
+
+        if (mobileMenu) {
+
+            mobileMenu.addEventListener(
+                "click",
+                () => {
+
+                    sidebar.classList.toggle(
+                        "mobile-open"
+                    );
+
+                }
+            );
+
+        }
+
+    </script>
 
 </body>
 
 </html>
-```
