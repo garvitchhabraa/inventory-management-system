@@ -192,4 +192,42 @@ router.put("/:id", (req, res) => {
         }
     );
 });
+// UPDATE PRODUCT
+router.put("/:id", (req, res) => {
+
+    const {
+        name,
+        category,
+        sku,
+        supplier,
+        price,
+        quantity,
+        description
+    } = req.body;
+
+    const sql = `
+        UPDATE products
+        SET name=?, category=?, sku=?, supplier=?, price=?, quantity=?, description=?
+        WHERE id=?
+    `;
+
+    db.query(
+        sql,
+        [name, category, sku, supplier, price, quantity, description, req.params.id],
+        (err, result) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    message: "Update failed",
+                    error: err
+                });
+            }
+
+            res.json({
+                success: true,
+                message: "Product updated successfully"
+            });
+        }
+    );
+});
 module.exports = router;

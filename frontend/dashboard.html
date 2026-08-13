@@ -266,7 +266,65 @@
 
 
 <!-- ADD PRODUCT MODAL -->
+<!-- EDIT PRODUCT MODAL -->
+<div class="modal" id="editModal">
+    <div class="modal-box">
 
+        <button class="modal-close" onclick="closeEditModal()">×</button>
+
+        <div class="modal-title">
+            <div class="modal-icon">✏️</div>
+            <div>
+                <h2>Edit Product</h2>
+                <p>Update product details.</p>
+            </div>
+        </div>
+
+        <form id="editForm">
+
+            <input type="hidden" id="editId">
+
+            <label>Product Name</label>
+            <input type="text" id="editName" required>
+
+            <label>Category</label>
+            <input type="text" id="editCategory" required>
+
+            <div class="form-row">
+                <div>
+                    <label>SKU</label>
+                    <input type="text" id="editSku" required>
+                </div>
+
+                <div>
+                    <label>Supplier</label>
+                    <input type="text" id="editSupplier">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label>Price</label>
+                    <input type="number" id="editPrice" required>
+                </div>
+
+                <div>
+                    <label>Quantity</label>
+                    <input type="number" id="editQuantity" required>
+                </div>
+            </div>
+
+            <label>Description</label>
+            <textarea id="editDescription"></textarea>
+
+            <button type="submit" class="save-btn">
+                Update Product
+            </button>
+
+        </form>
+
+    </div>
+</div>
 <div class="modal" id="productModal">
 
     <div class="modal-box">

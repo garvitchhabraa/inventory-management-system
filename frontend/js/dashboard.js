@@ -645,3 +645,73 @@ function escapeHTML(value) {
 // ================================
 
 loadProducts();
+// ================================
+// EDIT PRODUCT FEATURE
+// ================================
+
+function editProduct(id) {
+
+    const product = allProducts.find(p => p.id == id);
+
+    if (!product) {
+        alert("Product not found");
+        return;
+    }
+
+    document.getElementById("editId").value = product.id;
+    document.getElementById("editName").value = product.name;
+    document.getElementById("editCategory").value = product.category;
+    document.getElementById("editSku").value = product.sku;
+    document.getElementById("editSupplier").value = product.supplier || "";
+    document.getElementById("editPrice").value = product.price;
+    document.getElementById("editQuantity").value = product.quantity;
+    document.getElementById("editDescription").value = product.description || "";
+
+    document.getElementById("editModal").style.display = "flex";
+}
+
+function closeEditModal() {
+    document.getElementById("editModal").style.display = "none";
+}
+
+// UPDATE PRODUCT
+document.getElementById("editForm").addEventListener("submit", async function (e) {
+
+    e.preventDefault();
+
+    const id = document.getElementById("editId").value;
+
+    const updatedProduct = {
+        name: document.getElementById("editName").value,
+        category: document.getElementById("editCategory").value,
+        sku: document.getElementById("editSku").value,
+        supplier: document.getElementById("editSupplier").value,
+        price: document.getElementById("editPrice").value,
+        quantity: document.getElementById("editQuantity").value,
+        description: document.getElementById("editDescription").value
+    };
+
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedProduct)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || "Update failed");
+        }
+
+        alert("Product updated successfully!");
+
+        closeEditModal();
+        loadProducts();
+
+    } catch (error) {
+        alert("Error: " + error.message);
+    }
+});

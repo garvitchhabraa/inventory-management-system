@@ -1,158 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Create Account - InventoryPro</title>
-
-    <link rel="stylesheet" href="css/style.css">
+    <title>Stock Flow | Create Account</title>
+    <link rel="stylesheet" href="css/login.css">
 </head>
+<body>
 
-<body class="auth-page">
+<div class="background">
+    <div class="grid"></div>
+    <div class="glow glow-one"></div>
+    <div class="glow glow-two"></div>
+</div>
 
-    <div class="auth-container">
+<main class="login-page">
 
-        <div class="auth-card">
-
-            <div class="auth-logo">
-                Inventory<span>Pro</span>
+    <section class="brand-section">
+        <div class="brand-logo">
+            <div class="logo-icon">S</div>
+            <div>
+                <h1>Stock Flow</h1>
+                <span>Smart Inventory Management</span>
             </div>
+        </div>
 
-            <h1>Create Account</h1>
-
-            <p class="auth-subtitle">
-                Start managing your inventory today
+        <div class="brand-content">
+            <p class="small-title">CREATE YOUR ACCOUNT</p>
+            <h2>Join <span>Stock Flow</span></h2>
+            <p class="description">
+                Create a new account to start managing your inventory, products and business operations efficiently.
             </p>
+        </div>
+    </section>
 
+    <section class="login-section">
+        <div class="login-card">
+
+            <div class="login-header">
+                <h2>Create Account</h2>
+                <p>Register a new Stock Flow account.</p>
+            </div>
 
             <form id="registerForm">
 
-                <!-- FULL NAME -->
-
-                <div class="form-group">
-
-                    <label for="name">
-                        Full Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder="Enter your full name"
-                        required
-                    >
-
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
                 </div>
 
-
-                <!-- EMAIL -->
-
-                <div class="form-group">
-
-                    <label for="email">
-                        Email Address
-                    </label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Enter your email"
-                        required
-                    >
-
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
                 </div>
 
-
-                <!-- PASSWORD -->
-
-                <div class="form-group">
-
-                    <label for="password">
-                        Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Create a password"
-                        minlength="6"
-                        required
-                    >
-
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Create a password" required>
                 </div>
 
-
-                <!-- CONFIRM PASSWORD -->
-
-                <div class="form-group">
-
-                    <label for="confirmPassword">
-                        Confirm Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        placeholder="Confirm your password"
-                        minlength="6"
-                        required
-                    >
-
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
                 </div>
 
+                <p id="registerError" class="login-error"></p>
 
-                <!-- TERMS -->
-
-                <div class="form-options">
-
-                    <label class="remember">
-
-                        <input
-                            type="checkbox"
-                            id="terms"
-                            required
-                        >
-
-                        I agree to the terms and conditions
-
-                    </label>
-
-                </div>
-
-
-                <!-- BUTTON -->
-
-                <button
-                    type="submit"
-                    class="auth-btn"
-                >
-                    Create Account
+                <button type="submit" class="login-btn">
+                    Create Account <span>→</span>
                 </button>
-
             </form>
 
-
-            <!-- LOGIN LINK -->
-
-            <p class="auth-footer">
-
+            <div class="register-link">
                 Already have an account?
-
-                <a href="login.html">
-                    Login
-                </a>
-
-            </p>
+                <a href="login.html">Sign In</a>
+            </div>
 
         </div>
+    </section>
 
-    </div>
+</main>
 
-
-    <script src="js/app.js"></script>
-
+<script src="js/register.js"></script>
 </body>
-
 </html>

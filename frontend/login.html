@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,6 +13,7 @@
 
 <body>
 
+    <!-- BACKGROUND -->
     <div class="background">
         <div class="grid"></div>
         <div class="glow glow-one"></div>
@@ -50,9 +52,8 @@
                 </h2>
 
                 <p class="description">
-                    Track products, manage inventory and
-                    monitor your business from one powerful
-                    dashboard.
+                    Track products, manage inventory, monitor stock levels
+                    and control suppliers from one modern dashboard.
                 </p>
 
 
@@ -60,17 +61,17 @@
 
                     <div class="feature">
                         <div class="feature-icon">✓</div>
-                        <span>Simple inventory management</span>
+                        <span>Real-time inventory tracking</span>
                     </div>
 
                     <div class="feature">
                         <div class="feature-icon">✓</div>
-                        <span>Real-time product tracking</span>
+                        <span>Add, edit and delete products easily</span>
                     </div>
 
                     <div class="feature">
                         <div class="feature-icon">✓</div>
-                        <span>Powerful dashboard analytics</span>
+                        <span>Professional dashboard analytics</span>
                     </div>
 
                 </div>
@@ -80,7 +81,7 @@
         </section>
 
 
-        <!-- LOGIN -->
+        <!-- LOGIN CARD -->
 
         <section class="login-section">
 
@@ -89,7 +90,6 @@
                 <div class="mobile-logo">
 
                     <div class="logo-icon">S</div>
-
                     <h1>Stock Flow</h1>
 
                 </div>
@@ -100,18 +100,15 @@
                     <h2>Welcome back</h2>
 
                     <p>
-                        Sign in to continue to your dashboard.
+                        Sign in to continue to your inventory dashboard.
                     </p>
 
                 </div>
 
 
-                <!-- IMPORTANT:
-                     Keep these IDs because your existing
-                     login.js uses them.
-                -->
-
                 <form id="loginForm">
+
+                    <!-- EMAIL -->
 
                     <div class="input-group">
 
@@ -129,6 +126,8 @@
 
                     </div>
 
+
+                    <!-- PASSWORD -->
 
                     <div class="input-group">
 
@@ -159,10 +158,12 @@
                     </div>
 
 
-                    <!-- Your JS can display errors here -->
+                    <!-- ERROR MESSAGE -->
 
                     <p id="loginError" class="login-error"></p>
 
+
+                    <!-- LOGIN BUTTON -->
 
                     <button
                         type="submit"
@@ -175,6 +176,21 @@
                 </form>
 
 
+                <!-- CREATE ACCOUNT LINK -->
+
+                <div class="register-link">
+
+                    Don't have an account?
+
+                    <a href="register.html">
+                        Create Account
+                    </a>
+
+                </div>
+
+
+                <!-- FOOTER -->
+
                 <div class="login-footer">
                     🔐 Secure Stock Flow Login
                 </div>
@@ -186,10 +202,11 @@
     </main>
 
 
-    <!-- KEEP YOUR EXISTING LOGIN JS -->
+    <!-- LOGIN SCRIPT -->
 
     <script src="js/login.js"></script>
 
 </body>
 
 </html>
+```
