@@ -715,3 +715,24 @@ document.getElementById("editForm").addEventListener("submit", async function (e
         alert("Error: " + error.message);
     }
 });
+// ================================
+// SECTION NAVIGATION
+// ================================
+
+function showSection(sectionName, event) {
+
+    // Hide all sections
+    document.querySelectorAll(".content-section").forEach(section => {
+        section.classList.remove("active-section");
+    });
+
+    // Show selected section
+    document.getElementById(sectionName + "-section").classList.add("active-section");
+
+    // Update active sidebar item
+    document.querySelectorAll(".menu-item").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    event.currentTarget.classList.add("active");
+}

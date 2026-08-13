@@ -809,3 +809,10 @@ textarea {
     }
 
 }
+.content-section{
+    display:none;
+}
+
+.active-section{
+    display:block;
+}
