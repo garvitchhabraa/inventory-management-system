@@ -319,135 +319,179 @@
 </div>
 
 
-        <!-- ORDERS SECTION -->
+    <!-- ORDERS SECTION -->
+<div id="orders-section" class="content-section">
 
-        <div id="orders-section" class="content-section">
+    <section class="products-section">
 
-            <section class="products-section">
+        <div class="section-header">
+            <div>
+                <span class="section-label">ORDERS</span>
+                <h2>Orders Management</h2>
+            </div>
 
-                <div class="section-header">
-
-                    <div>
-                        <span class="section-label">ORDERS</span>
-                        <h2>Orders Management</h2>
-                    </div>
-
-                </div>
-
-
-                <div class="table-container">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Date</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                            </tr>
-
-                        </thead>
+            <button class="add-product-btn" onclick="addOrder()">
+                + Add Order
+            </button>
+        </div>
 
 
-                        <tbody>
+        <div class="table-container">
 
-                            <tr>
-                                <td>ORD-1001</td>
-                                <td>Rahul Sharma</td>
-                                <td>13 Aug 2026</td>
-                                <td>₹5,499</td>
-                                <td>
-                                    <span class="status in-stock">
-                                        Completed
-                                    </span>
-                                </td>
-                            </tr>
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
 
-                            <tr>
-                                <td>ORD-1002</td>
-                                <td>Priya Verma</td>
-                                <td>12 Aug 2026</td>
-                                <td>₹1,299</td>
-                                <td>
-                                    <span class="status low-stock">
-                                        Pending
-                                    </span>
-                                </td>
-                            </tr>
+                <tbody id="ordersTableBody">
 
-                        </tbody>
+                    <tr>
+                        <td>ORD-1001</td>
+                        <td>Rahul Sharma</td>
+                        <td>13 Aug 2026</td>
+                        <td>₹5,499</td>
+                        <td>
+                            <span class="status in-stock">Completed</span>
+                        </td>
 
-                    </table>
+                        <td>
+                            <div class="action-buttons">
 
-                </div>
+                                <button class="edit-btn"
+                                        onclick="editOrder(this)">✏️</button>
 
-            </section>
+                                <button class="delete-btn"
+                                        onclick="deleteOrder(this)">🗑️</button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>ORD-1002</td>
+                        <td>Priya Verma</td>
+                        <td>12 Aug 2026</td>
+                        <td>₹1,299</td>
+                        <td>
+                            <span class="status low-stock">Pending</span>
+                        </td>
+
+                        <td>
+                            <div class="action-buttons">
+
+                                <button class="edit-btn"
+                                        onclick="editOrder(this)">✏️</button>
+
+                                <button class="delete-btn"
+                                        onclick="deleteOrder(this)">🗑️</button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
 
         </div>
+
+    </section>
+
+</div>
 
 
         <!-- SUPPLIERS SECTION -->
+<div id="suppliers-section" class="content-section">
 
-        <div id="suppliers-section" class="content-section">
+    <section class="products-section">
 
-            <section class="products-section">
+        <div class="section-header">
+            <div>
+                <span class="section-label">SUPPLIERS</span>
+                <h2>Suppliers Management</h2>
+            </div>
 
-                <div class="section-header">
-
-                    <div>
-                        <span class="section-label">SUPPLIERS</span>
-                        <h2>Suppliers Management</h2>
-                    </div>
-
-                </div>
-
-
-                <div class="table-container">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-                                <th>Supplier</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Products</th>
-                            </tr>
-
-                        </thead>
+            <button class="add-product-btn" onclick="addSupplier()">
+                + Add Supplier
+            </button>
+        </div>
 
 
-                        <tbody>
+        <div class="table-container">
 
-                            <tr>
-                                <td>Dell India</td>
-                                <td>dell@example.com</td>
-                                <td>+91 9876543210</td>
-                                <td>Laptops, Accessories</td>
-                            </tr>
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Supplier</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Products</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
 
-                            <tr>
-                                <td>Samsung India</td>
-                                <td>samsung@example.com</td>
-                                <td>+91 9123456780</td>
-                                <td>Monitors, Electronics</td>
-                            </tr>
+                <tbody id="suppliersTableBody">
 
-                        </tbody>
+                    <tr>
+                        <td>Dell India</td>
+                        <td>dell@example.com</td>
+                        <td>+91 9876543210</td>
+                        <td>Laptops, Accessories</td>
 
-                    </table>
+                        <td>
+                            <div class="action-buttons">
 
-                </div>
+                                <button class="edit-btn"
+                                        onclick="editSupplier(this)">✏️</button>
 
-            </section>
+                                <button class="delete-btn"
+                                        onclick="deleteSupplier(this)">🗑️</button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Samsung India</td>
+                        <td>samsung@example.com</td>
+                        <td>+91 9123456780</td>
+                        <td>Monitors, Electronics</td>
+
+                        <td>
+                            <div class="action-buttons">
+
+                                <button class="edit-btn"
+                                        onclick="editSupplier(this)">✏️</button>
+
+                                <button class="delete-btn"
+                                        onclick="deleteSupplier(this)">🗑️</button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
 
         </div>
+
+    </section>
+
+</div>
 
 
         <!-- REPORTS SECTION -->

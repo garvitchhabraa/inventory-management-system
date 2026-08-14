@@ -336,7 +336,7 @@ function updateDashboardInsights(products){
 
     if(!attentionList) return;
 
-    const lowStockProducts = products.filter(product => product.quantity < 10);
+    const lowStockProducts = products.filter(product => product.quantity < 5);
 
     if(lowStockProducts.length === 0){
 
@@ -450,7 +450,7 @@ function updateDashboardInsights(products) {
 
     if (!attentionList) return;
 
-    const lowStockProducts = products.filter(product => product.quantity < 10);
+    const lowStockProducts = products.filter(product => product.quantity < 5);
 
     if (lowStockProducts.length === 0) {
 
@@ -903,3 +903,159 @@ function showSection(sectionName, event) {
 }
 updateDateTime();
 loadProducts();
+// =================================
+// ORDERS FUNCTIONS
+// =================================
+
+function addOrder() {
+
+    const customer = prompt("Enter customer name:");
+    if (!customer) return;
+
+    const amount = prompt("Enter order amount:");
+    if (!amount) return;
+
+    const table = document.getElementById("ordersTableBody");
+
+    const orderId = "ORD-" + Math.floor(Math.random() * 9000 + 1000);
+
+    const today = new Date().toLocaleDateString("en-IN");
+
+    table.innerHTML += `
+        <tr>
+            <td>${orderId}</td>
+            <td>${customer}</td>
+            <td>${today}</td>
+            <td>₹${amount}</td>
+            <td><span class="status in-stock">Completed</span></td>
+            <td>
+                <div class="action-buttons">
+                    <button class="edit-btn" onclick="editOrder(this)">✏️</button>
+                    <button class="delete-btn" onclick="deleteOrder(this)">🗑️</button>
+                </div>
+            </td>
+        </tr>
+    `;
+}
+
+function editOrder(btn) {
+
+    const row = btn.closest("tr");
+
+    // Current values
+    const currentCustomer = row.cells[1].innerText;
+    const currentAmount = row.cells[3].innerText.replace("₹", "");
+    const currentStatus = row.cells[4].innerText.trim();
+
+    // Edit customer
+    const customer = prompt("Edit customer name:", currentCustomer);
+    if (!customer) return;
+
+    // Edit amount
+    const amount = prompt("Edit amount:", currentAmount);
+    if (!amount) return;
+
+    // Edit status
+    let status = prompt(
+        "Enter status (Completed or Pending):",
+        currentStatus
+    );
+
+    if (!status) return;
+
+    status = status.trim();
+
+    // Validate status
+    if (status.toLowerCase() !== "completed" &&
+        status.toLowerCase() !== "pending") {
+
+        alert("Please enter only Completed or Pending");
+        return;
+    }
+
+    // Update values
+    row.cells[1].innerText = customer;
+    row.cells[3].innerText = "₹" + amount;
+
+    // Update status with proper color
+    if (status.toLowerCase() === "completed") {
+
+        row.cells[4].innerHTML =
+            '<span class="status in-stock">Completed</span>';
+
+    } else {
+
+        row.cells[4].innerHTML =
+            '<span class="status low-stock">Pending</span>';
+    }
+
+    alert("Order updated successfully!");
+}
+
+
+// =================================
+// SUPPLIERS FUNCTIONS
+// =================================
+
+function addSupplier() {
+
+    const name = prompt("Enter supplier name:");
+    if (!name) return;
+
+    const email = prompt("Enter supplier email:");
+    if (!email) return;
+
+    const phone = prompt("Enter supplier phone:");
+    if (!phone) return;
+
+    const products = prompt("Enter supplied products:");
+    if (!products) return;
+
+    const table = document.getElementById("suppliersTableBody");
+
+    table.innerHTML += `
+        <tr>
+            <td>${name}</td>
+            <td>${email}</td>
+            <td>${phone}</td>
+            <td>${products}</td>
+            <td>
+                <div class="action-buttons">
+                    <button class="edit-btn" onclick="editSupplier(this)">✏️</button>
+                    <button class="delete-btn" onclick="deleteSupplier(this)">🗑️</button>
+                </div>
+            </td>
+        </tr>
+    `;
+}
+
+function editSupplier(btn) {
+
+    const row = btn.closest("tr");
+
+    const name = prompt("Edit supplier name:", row.cells[0].innerText);
+    if (!name) return;
+
+    const email = prompt("Edit email:", row.cells[1].innerText);
+    if (!email) return;
+
+    const phone = prompt("Edit phone:", row.cells[2].innerText);
+    if (!phone) return;
+
+    const products = prompt("Edit products:", row.cells[3].innerText);
+    if (!products) return;
+
+    row.cells[0].innerText = name;
+    row.cells[1].innerText = email;
+    row.cells[2].innerText = phone;
+    row.cells[3].innerText = products;
+
+    alert("Supplier updated successfully!");
+}
+
+function deleteSupplier(btn) {
+
+    if (confirm("Delete this supplier?")) {
+        btn.closest("tr").remove();
+    }
+}
