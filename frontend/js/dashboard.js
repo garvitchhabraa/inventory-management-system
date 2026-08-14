@@ -61,75 +61,117 @@ function logout() {
 // ================================
 
 async function loadProducts() {
-
-    const tableBody =
-        document.getElementById("productTableBody");
-
-    tableBody.innerHTML = `
-        <tr>
-            <td colspan="8" class="loading">
-                Loading products...
-            </td>
-        </tr>
-    `;
-
     try {
+        const response = await fetch(API_URL);
 
-        const response =
-            await fetch(API_URL);
+        const data = await response.json();
 
-        if (!response.ok) {
-            throw new Error(
-                "API returned status " + response.status
-            );
-        }
+        allProducts = data.products || data;
 
-        const data =
-            await response.json();
+        console.log("Loaded products:", allProducts);
 
-        console.log("API DATA:", data);
-
-
-        // IMPORTANT:
-        // Your API returns { success:true, products:[...] }
-
-        if (!data.success || !Array.isArray(data.products)) {
-
-            throw new Error(
-                "Invalid products response"
-            );
-        }
-
-
-        allProducts = data.products;
-
-        displayProducts(allProducts);
-
+        renderProducts(allProducts);
         updateStatistics(allProducts);
-
+        updateDashboardInsights(allProducts);
 
     } catch (error) {
+        console.error(error);
 
-        console.error(
-            "PRODUCT LOADING ERROR:",
-            error
-        );
+        const tableBody = document.getElementById("productTableBody");
 
+        if (tableBody) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="8" style="color:red;padding:20px;text-align:center;">
+                        ❌ ${error.message}
+                    </td>
+                </tr>
+            `;
+        }
+    }
+}
+// ================================
+// RENDER PRODUCTS
+// ================================
+
+function renderProducts(products) {
+
+    const tableBody = document.getElementById("productTableBody");
+
+    if (!tableBody) {
+        console.error("productTableBody not found");
+        return;
+    }
+
+    // No products
+    if (!products || products.length === 0) {
         tableBody.innerHTML = `
             <tr>
                 <td colspan="8" class="loading">
-                    ❌ Unable to load products.
-                    <br>
-                    <small>
-                        Make sure backend is running on
-                        localhost:5000
-                    </small>
+                    No products found.
                 </td>
             </tr>
         `;
+        return;
     }
-}
 
+    tableBody.innerHTML = "";
+
+    products.forEach(product => {
+
+        const stockStatus = product.quantity < 10
+            ? "low-stock"
+            : "in-stock";
+
+        const stockText = product.quantity < 10
+            ? "Low Stock"
+            : "In Stock";
+
+        tableBody.innerHTML += `
+            <tr>
+
+                <td>
+                    <div class="product-cell">
+                        <div class="product-icon">📦</div>
+                        <div>
+                            <strong>${product.name}</strong>
+                            <small>${product.description || "No description"}</small>
+                        </div>
+                    </div>
+                </td>
+
+                <td>${product.sku}</td>
+                <td>${product.category}</td>
+                <td>${product.supplier || "-"}</td>
+                <td>₹${Number(product.price).toLocaleString("en-IN")}</td>
+                <td>${product.quantity}</td>
+
+                <td>
+                    <span class="status ${stockStatus}">
+                        ${stockText}
+                    </span>
+                </td>
+
+                <td>
+                    <div class="action-buttons">
+
+                        <button class="edit-btn"
+                                onclick="editProduct(${product.id})">
+                            ✏️
+                        </button>
+
+                        <button class="delete-btn"
+                                onclick="deleteProduct(${product.id})">
+                            🗑️
+                        </button>
+
+                    </div>
+                </td>
+
+            </tr>
+        `;
+    });
+}
 
 // ================================
 // DISPLAY PRODUCTS
@@ -267,6 +309,66 @@ function displayProducts(products) {
 // ================================
 
 function updateStatistics(products) {
+    // ================================
+// DASHBOARD INSIGHTS
+// ================================
+
+function updateDashboardInsights(products){
+
+    // Calculate inventory value
+    const inventoryValue = products.reduce((sum, product) => {
+        return sum + (Number(product.price) * Number(product.quantity));
+    }, 0);
+
+    // Estimate monthly revenue (18% of inventory value)
+    const monthlyRevenue = Math.round(inventoryValue * 0.18);
+
+    const revenueElement = document.getElementById("monthlyRevenue");
+
+    if(revenueElement){
+        revenueElement.textContent =
+            "₹" + monthlyRevenue.toLocaleString("en-IN");
+    }
+
+
+    // Needs Attention List
+    const attentionList = document.getElementById("attentionList");
+
+    if(!attentionList) return;
+
+    const lowStockProducts = products.filter(product => product.quantity < 10);
+
+    if(lowStockProducts.length === 0){
+
+        attentionList.innerHTML = `
+            <div class="attention-empty">
+                All products are sufficiently stocked.
+            </div>
+        `;
+
+        return;
+    }
+
+    attentionList.innerHTML = "";
+
+    lowStockProducts.forEach(product => {
+
+        attentionList.innerHTML += `
+            <div class="attention-item">
+
+                <div>
+                    <strong>${product.name}</strong>
+                    <small>${product.category}</small>
+                </div>
+
+                <span class="stock-badge">
+                    ${product.quantity} left
+                </span>
+
+            </div>
+        `;
+    });
+}
 
     let totalStock = 0;
 
@@ -321,6 +423,68 @@ function updateStatistics(products) {
     ).textContent =
         lowStock;
 }
+// ================================
+// DASHBOARD INSIGHTS
+// ================================
+
+function updateDashboardInsights(products) {
+
+    // Calculate inventory value
+    const inventoryValue = products.reduce((sum, product) => {
+        return sum + (Number(product.price) * Number(product.quantity));
+    }, 0);
+
+    // Estimate monthly revenue
+    const monthlyRevenue = Math.round(inventoryValue * 0.18);
+
+    const revenueElement = document.getElementById("monthlyRevenue");
+
+    if (revenueElement) {
+        revenueElement.textContent =
+            "₹" + monthlyRevenue.toLocaleString("en-IN");
+    }
+
+
+    // Low stock / needs attention
+    const attentionList = document.getElementById("attentionList");
+
+    if (!attentionList) return;
+
+    const lowStockProducts = products.filter(product => product.quantity < 10);
+
+    if (lowStockProducts.length === 0) {
+
+        attentionList.innerHTML = `
+            <div class="attention-empty">
+                All products are sufficiently stocked.
+            </div>
+        `;
+
+        return;
+    }
+
+    attentionList.innerHTML = "";
+
+    lowStockProducts.forEach(product => {
+
+        attentionList.innerHTML += `
+            <div class="attention-item">
+
+                <div>
+                    <strong>${product.name}</strong>
+                    <small>${product.category}</small>
+                </div>
+
+                <span class="stock-badge">
+                    ${product.quantity} left
+                </span>
+
+            </div>
+        `;
+    });
+}
+updateDateTime();
+loadProducts();
 
 
 // ================================
@@ -715,6 +879,7 @@ document.getElementById("editForm").addEventListener("submit", async function (e
         alert("Error: " + error.message);
     }
 });
+
 // ================================
 // SECTION NAVIGATION
 // ================================
@@ -736,3 +901,5 @@ function showSection(sectionName, event) {
 
     event.currentTarget.classList.add("active");
 }
+updateDateTime();
+loadProducts();

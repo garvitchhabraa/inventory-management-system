@@ -3,105 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Flow | Inventory System</title>
 
-    <title>Inventory Management System</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
 
-    <link rel="stylesheet" href="css/style.css">
+        body{
+            height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-family:Arial, sans-serif;
+            background:linear-gradient(135deg,#4f46e5,#7c3aed);
+            color:white;
+            overflow:hidden;
+        }
+
+        .loader{
+            text-align:center;
+        }
+
+        .logo{
+            width:90px;
+            height:90px;
+            border-radius:24px;
+            background:rgba(255,255,255,0.15);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:42px;
+            font-weight:700;
+            margin:0 auto 22px;
+            backdrop-filter:blur(10px);
+        }
+
+        h1{
+            font-size:38px;
+            margin-bottom:10px;
+        }
+
+        p{
+            font-size:16px;
+            opacity:0.9;
+            margin-bottom:26px;
+        }
+
+        .spinner{
+            width:42px;
+            height:42px;
+            border:4px solid rgba(255,255,255,0.25);
+            border-top:4px solid white;
+            border-radius:50%;
+            margin:0 auto;
+            animation:spin 1s linear infinite;
+        }
+
+        @keyframes spin{
+            to{ transform:rotate(360deg); }
+        }
+    </style>
 </head>
-
 <body>
 
-    <header class="navbar">
+    <div class="loader">
 
-        <div class="logo">
-            Inventory<span>Pro</span>
-        </div>
+        <div class="logo">S</div>
 
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="login.html">Login</a>
-            <a href="register.html">Register</a>
-        </nav>
+        <h1>Stock Flow</h1>
 
-    </header>
+        <p>Smart Inventory Management System</p>
 
+        <div class="spinner"></div>
 
-    <main class="hero">
+    </div>
 
-        <div class="hero-content">
-
-            <p class="tagline">
-                SMART INVENTORY MANAGEMENT
-            </p>
-
-            <h1>
-                Manage Your Inventory
-                <span>Smarter & Faster</span>
-            </h1>
-
-            <p class="description">
-                Track products, monitor stock levels, manage orders
-                and keep your business organized from one powerful dashboard.
-            </p>
-
-            <div class="hero-buttons">
-
-                <a href="login.html" class="btn primary-btn">
-                    Get Started
-                </a>
-
-                <a href="register.html" class="btn secondary-btn">
-                    Create Account
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div class="hero-card">
-
-            <div class="card-header">
-                <h3>Inventory Overview</h3>
-                <span class="status">● Live</span>
-            </div>
-
-            <div class="stats">
-
-                <div class="stat-box">
-                    <h2>125</h2>
-                    <p>Total Products</p>
-                </div>
-
-                <div class="stat-box">
-                    <h2>1,540</h2>
-                    <p>Total Stock</p>
-                </div>
-
-                <div class="stat-box">
-                    <h2>08</h2>
-                    <p>Low Stock</p>
-                </div>
-
-                <div class="stat-box">
-                    <h2>245</h2>
-                    <p>Total Orders</p>
-                </div>
-
-            </div>
-
-        </div>
-
-    </main>
-
-
-    <footer>
-
-        <p>
-            © 2026 InventoryPro. All Rights Reserved.
-        </p>
-
-    </footer>
+    <script>
+        // Redirect automatically
+        if(localStorage.getItem("isLoggedIn") === "true"){
+            window.location.href = "dashboard.html";
+        }else{
+            window.location.href = "login.html";
+        }
+    </script>
 
 </body>
 </html>

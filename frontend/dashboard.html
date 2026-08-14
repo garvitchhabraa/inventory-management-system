@@ -187,81 +187,136 @@
                 </div>
 
             </section>
+            <!-- DASHBOARD INSIGHTS -->
+<section class="dashboard-grid">
+
+    <!-- MONTHLY REVENUE CARD -->
+    <div class="dashboard-card revenue-card">
+
+        <div class="card-header">
+
+            <div>
+                <span class="section-label">MONTHLY REVENUE</span>
+                <h3>Revenue Overview</h3>
+            </div>
+
+            <div class="revenue-icon">📈</div>
+
+        </div>
+
+        <div class="revenue-amount" id="monthlyRevenue">
+            ₹0
+        </div>
+
+        <p class="revenue-growth">
+            ↗ +12.4% from last month
+        </p>
+
+        <div class="mini-chart">
+            <div class="bar" style="height:45%"></div>
+            <div class="bar" style="height:60%"></div>
+            <div class="bar" style="height:55%"></div>
+            <div class="bar" style="height:75%"></div>
+            <div class="bar" style="height:85%"></div>
+            <div class="bar" style="height:100%"></div>
+        </div>
+
+    </div>
+
+
+    <!-- NEEDS ATTENTION CARD -->
+    <div class="dashboard-card attention-card">
+
+        <div class="card-header">
+
+            <div>
+                <span class="section-label">NEEDS ATTENTION</span>
+                <h3>Low Stock Products</h3>
+            </div>
+
+            <div class="attention-icon">⚠️</div>
+
+        </div>
+
+        <div id="attentionList" class="attention-list">
+
+            <div class="attention-empty">
+                All products are sufficiently stocked.
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
         </div>
 
 
         <!-- PRODUCTS SECTION -->
 
-        <div id="products-section" class="content-section">
+        
+<div id="products-section" class="content-section">
 
-            <section class="products-section">
+    <section class="products-section">
 
-                <div class="section-header">
+        <div class="section-header">
+            <div>
+                <span class="section-label">INVENTORY</span>
+                <h2>Products Management</h2>
+            </div>
 
-                    <div>
-                        <span class="section-label">INVENTORY</span>
-                        <h2>Products Management</h2>
-                    </div>
-
-                    <button class="add-product-btn" onclick="openModal()">
-                        + Add Product
-                    </button>
-
-                </div>
-
-
-                <div class="search-box">
-
-                    <span>🔍</span>
-
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Search products..."
-                        oninput="searchProducts()"
-                    >
-
-                </div>
+            <button class="add-product-btn" onclick="openModal()">
+                + Add Product
+            </button>
+        </div>
 
 
-                <div class="table-container">
+        <div class="search-box">
+            <span>🔍</span>
 
-                    <table>
-
-                        <thead>
-
-                            <tr>
-                                <th>Product</th>
-                                <th>SKU</th>
-                                <th>Category</th>
-                                <th>Supplier</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-
-                        </thead>
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search products..."
+                oninput="searchProducts()"
+            >
+        </div>
 
 
-                        <tbody id="productTableBody">
+        <div class="table-container">
 
-                            <tr>
-                                <td colspan="8" class="loading">
-                                    Loading products...
-                                </td>
-                            </tr>
+            <table>
 
-                        </tbody>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>SKU</th>
+                        <th>Category</th>
+                        <th>Supplier</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-                    </table>
 
-                </div>
+                <tbody id="productTableBody">
+                    <tr>
+                        <td colspan="8" class="loading">
+                            Loading products...
+                        </td>
+                    </tr>
+                </tbody>
 
-            </section>
+            </table>
 
         </div>
+
+    </section>
+
+</div>
 
 
         <!-- ORDERS SECTION -->
