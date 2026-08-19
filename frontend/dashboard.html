@@ -9,6 +9,7 @@
     <title>Stock Flow | Dashboard</title>
 
     <link rel="stylesheet" href="css/dashboard.css">
+    <script src="js/theme.js"></script>
 
     <script>
         if (localStorage.getItem("isLoggedIn") !== "true") {
@@ -66,11 +67,11 @@
 
             <div class="user-box">
 
-                <div class="avatar">A</div>
+                <div class="avatar" id="sidebarAvatar">U</div>
 
-                <div>
-                    <strong>Admin</strong>
-                    <small id="userEmail">Administrator</small>
+                <div class="user-info-text">
+                    <strong id="sidebarUserName">User</strong>
+                    <small id="userEmail">user@example.com</small>
                 </div>
 
             </div>
@@ -102,12 +103,16 @@
 
                 <div class="header-right">
 
+                    <button type="button" class="theme-toggle-btn" onclick="toggleTheme()">
+                        <span class="theme-icon">🌙</span> <span class="theme-text">Dark Mode</span>
+                    </button>
+
                     <div class="datetime">
                         <strong id="currentDate"></strong>
                         <span id="currentTime"></span>
                     </div>
 
-                    <div class="header-avatar">A</div>
+                    <div class="header-avatar" id="headerAvatar">U</div>
 
                 </div>
 
@@ -122,8 +127,8 @@
                         INVENTORY OVERVIEW
                     </span>
 
-                    <h2>
-                        Welcome back, Admin 👋
+                    <h2 id="welcomeHeading">
+                        Welcome back 👋
                     </h2>
 
                     <p>
@@ -271,18 +276,38 @@
             </button>
         </div>
 
+        <!-- SEARCH AND FILTER CONTROLS -->
+        <div class="search-filter-controls">
 
-        <div class="search-box">
-            <span>🔍</span>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search products by name or SKU..."
+                    oninput="applyProductFilters()"
+                >
+                <button type="button" id="clearSearchBtn" class="clear-search-btn" onclick="clearSearchInput()" title="Clear Search">✖</button>
+            </div>
 
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search products..."
-                oninput="searchProducts()"
-            >
+            <select id="categoryFilter" class="filter-select" onchange="applyProductFilters()">
+                <option value="All">All Categories</option>
+            </select>
+
+            <select id="supplierFilter" class="filter-select" onchange="applyProductFilters()">
+                <option value="All">All Suppliers</option>
+            </select>
+
+            <button type="button" class="clear-filters-btn" onclick="clearAllFilters()">
+                Clear Filters
+            </button>
+
         </div>
 
+        <!-- RESULTS MATCH COUNT BAR -->
+        <div class="results-count-bar">
+            <span id="resultsCount">Showing 0 products</span>
+        </div>
 
         <div class="table-container">
 

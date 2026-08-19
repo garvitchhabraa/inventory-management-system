@@ -66,22 +66,21 @@ document
 
 
             // Save login information
+            localStorage.setItem("isLoggedIn", "true");
+            
+            const userObj = data.user || {};
+            const userEmailVal = userObj.email || email;
+            const userNameVal = userObj.name || "";
 
-            localStorage.setItem(
-                "isLoggedIn",
-                "true"
-            );
-
-            localStorage.setItem(
-                "userEmail",
-                email
-            );
-
+            localStorage.setItem("userEmail", userEmailVal);
+            if (userNameVal) {
+                localStorage.setItem("userName", userNameVal);
+            } else {
+                localStorage.removeItem("userName");
+            }
 
             // Go to dashboard
-
-            window.location.href =
-                "dashboard.html";
+            window.location.href = "dashboard.html";
 
 
         } catch (error) {

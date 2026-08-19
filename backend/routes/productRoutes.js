@@ -4,19 +4,41 @@ const db = require("../config/db");
 
 
 // =========================
-// GET ALL PRODUCTS
+// GET ALL PRODUCTS (supports optional query params: search, category, supplier, stockStatus, minPrice, maxPrice, minQty, maxQty, sortBy)
 // =========================
 
 router.get("/", (req, res) => {
+    const { search, category, supplier } = req.query;
 
-    const sql = "SELECT * FROM products ORDER BY id DESC";
+    let sql = "SELECT * FROM products";
+    const whereConditions = [];
+    const queryParams = [];
 
-    db.query(sql, (err, results) => {
+    if (search && search.trim() !== "") {
+        const searchTerm = `%${search.trim()}%`;
+        whereConditions.push("(name LIKE ? OR sku LIKE ? OR category LIKE ? OR supplier LIKE ?)");
+        queryParams.push(searchTerm, searchTerm, searchTerm, searchTerm);
+    }
 
+    if (category && category.trim() !== "" && category !== "All") {
+        whereConditions.push("category = ?");
+        queryParams.push(category.trim());
+    }
+
+    if (supplier && supplier.trim() !== "" && supplier !== "All") {
+        whereConditions.push("supplier = ?");
+        queryParams.push(supplier.trim());
+    }
+
+    if (whereConditions.length > 0) {
+        sql += " WHERE " + whereConditions.join(" AND ");
+    }
+
+    sql += " ORDER BY id DESC";
+
+    db.query(sql, queryParams, (err, results) => {
         if (err) {
-
             console.error(err);
-
             return res.status(500).json({
                 success: false,
                 message: "Database error"
@@ -179,47 +201,11 @@ router.put("/:id", (req, res) => {
         ],
         (err, result) => {
             if (err) {
+                console.error("Update product error:", err);
                 return res.status(500).json({
                     success: false,
-                    message: "Failed to update product"
-                });
-            }
-
-            res.json({
-                success: true,
-                message: "Product updated successfully"
-            });
-        }
-    );
-});
-// UPDATE PRODUCT
-router.put("/:id", (req, res) => {
-
-    const {
-        name,
-        category,
-        sku,
-        supplier,
-        price,
-        quantity,
-        description
-    } = req.body;
-
-    const sql = `
-        UPDATE products
-        SET name=?, category=?, sku=?, supplier=?, price=?, quantity=?, description=?
-        WHERE id=?
-    `;
-
-    db.query(
-        sql,
-        [name, category, sku, supplier, price, quantity, description, req.params.id],
-        (err, result) => {
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    message: "Update failed",
-                    error: err
+                    message: "Failed to update product",
+                    error: err.message
                 });
             }
 

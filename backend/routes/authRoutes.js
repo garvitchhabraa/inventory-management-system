@@ -76,10 +76,15 @@ router.post("/login", (req, res) => {
                 });
             }
 
+            const user = results[0];
             res.json({
                 success: true,
                 message: "Login successful",
-                user: results[0]
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                }
             });
         }
     );
